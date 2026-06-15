@@ -94,7 +94,8 @@ async function run() {
         })
 
 
-    
+        // ************************************************You have to comment at lest 2 line of code***********************************************************
+
         // Connect the client to the server	(optional starting in v4.7)
         await client.connect();
         // Send a ping to confirm a successful connection
