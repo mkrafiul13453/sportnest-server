@@ -5,6 +5,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(express.json())
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { jwtVerify, createRemoteJWKSet } = require('jose-cjs')
 const uri = process.env.MONGO_URI
 const port = process.env.PORT
 
@@ -17,11 +18,37 @@ const client = new MongoClient(uri, {
     }
 });
 
+
+
+// ************************************************Creating verify token function***********************************************************
+
+// const JWKS = createRemoteJWKSet(new URL("http://localhost:3000/api/auth/jwks"));
+// const verifyToken = async (req, res, next) => {
+//     const authHeader = req?.headers.authorization;
+//     if (!authHeader) {
+//         return res.status(401).json({ message: "Unauthorized" });
+//     }
+//     const token = authHeader.split(" ")[1];
+//     if (!token) {
+//         return res.status(401).json({ message: "Unauthorized" });
+//     }
+
+//     try {
+//         const { payload } = await jwtVerify(token, JWKS);
+//         console.log(payload);
+//         next();
+
+//     } catch (error) {
+//         return res.status(403).json({ message: "Forbidden" });
+//     }
+// };
+
+
 async function run() {
     try {
         const db = client.db('sportnest')
-        const facilityCollection = db.collection('facilities')
-        const bookingCollection = db.collection('bookings')
+        const facilityCollection = db.collection('facilities');
+        const bookingCollection = db.collection('bookings');
 
 
         // ************************************************Creating the booking post API***********************************************************
@@ -97,7 +124,7 @@ async function run() {
         // ************************************************You have to comment at lest 2 line of code***********************************************************
 
         // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
+        // await client.connect();
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
